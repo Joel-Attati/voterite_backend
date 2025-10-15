@@ -1,0 +1,20 @@
+# Dependencies
+/node_modules
+/jspm_packages/
+/lib-cov
+/coverage
+
+# Configuration/Secrets
+.env
+.env.*
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Compiled/Build files
+/dist
+/build
+
+# OS files
+.DS_Store
+Thumbs.db
