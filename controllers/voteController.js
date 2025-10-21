@@ -87,3 +87,39 @@ export const handlePaystackCallback = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// 3️⃣ Get Voting Statistics
+export const getVoteStats = async (req, res) => {
+  try {
+    // Optional: if you pass categoryId or eventId, filter by that
+    const { categoryId, eventId } = req.query;
+
+    // Base query
+    let filter = {};
+    if (categoryId) filter.category = categoryId;
+    if (eventId) filter.event = eventId;
+
+    // Fetch all nominees (filtered if needed)
+    const nominees = await Nominee.find(filter)
+      .populate("category", "name") // optional: show category name
+      .populate("event", "name");   // optional: show event name
+
+    // Build stats response
+    const stats = nominees.map((nominee) => ({
+      nomineeId: nominee._id,
+      nomineeName: nominee.name,
+      votes: nominee.votes,
+      category: nominee.category?.name || null,
+      event: nominee.event?.name || null,
+    }));
+
+    res.status(200).json({
+      message: "Voting statistics retrieved successfully.",
+      totalNominees: stats.length,
+      stats,
+    });
+  } catch (error) {
+    console.error("Error fetching vote stats:", error.message);
+    res.status(500).json({ message: "Failed to load statistics." });
+  }
+};
+

@@ -16,7 +16,7 @@ export async function initializePayment({ email, amount, phone }) {
         amount: amount * 100, // Paystack expects amount in kobo/pesewas
         channels: ["mobile_money", "card"], // allow mobile money and card
         metadata: { phone }, // store phone number for reference
-        callback_url: "https://your-backend.com/api/vote/callback"
+        callback_url: `${process.env.BACKEND_URL}/api/vote/callback`, // dynamic backend URL
       },
       {
         headers: {
